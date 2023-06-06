@@ -2,7 +2,7 @@
   <div class="input-group">
     <input
       type="text"
-      placeholder="Todo"
+      :placeholder="placeholder"
       class="form-control"
       v-model="inputText"
       @keyup.enter="addTodoHandler"
@@ -25,6 +25,10 @@ export default {
       type: String,
       default: "Add Todo",
     },
+    placeholder: {
+      type: String,
+      default: "Todo",
+    },
   },
   methods: {
     addTodoHandler() {
@@ -36,4 +40,5 @@ export default {
   },
 };
 </script>
+
 <style scoped></style>

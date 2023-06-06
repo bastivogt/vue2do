@@ -5,36 +5,51 @@
     </div>
 
     <TodoCard title="Add Todo">
-      <TodoAdd @addTodo="addTodoHandler" />
+      <TodoAdd
+        buttonTitle="Neues Todo"
+        placeholder="Todo Titel"
+        @addTodo="addTodoHandler"
+      />
     </TodoCard>
 
     <template v-if="todos.length !== 0">
-      <TodoCard title="Todos not done">
-        <Todos>
-          <TodoItem
-            :todo="todo"
-            v-for="todo in todosNotDone"
-            :key="todo.id"
-            @doneChange="todoDoneChangeHandler"
-            @delete="todoDeleteHandler"
-          />
-        </Todos>
+      <TodoCard title="Todos nicht erledigt">
+        <template v-if="todosNotDone.length !== 0">
+          <Todos>
+            <TodoItem
+              :todo="todo"
+              v-for="todo in todosNotDone"
+              :key="todo.id"
+              @doneChange="todoDoneChangeHandler"
+              @delete="todoDeleteHandler"
+            />
+          </Todos>
+        </template>
+        <template v-else>
+          <p>Keine Todos vorhanden</p>
+        </template>
       </TodoCard>
 
-      <TodoCard title="Todos done">
-        <Todos>
-          <TodoItem
-            :todo="todo"
-            v-for="todo in todosDone"
-            :key="todo.id"
-            @doneChange="todoDoneChangeHandler"
-            @delete="todoDeleteHandler"
-          />
-        </Todos>
+      <TodoCard title="Todos erledigt">
+        <template v-if="todosDone.length !== 0">
+          <Todos>
+            <TodoItem
+              :todo="todo"
+              v-for="todo in todosDone"
+              :key="todo.id"
+              @doneChange="todoDoneChangeHandler"
+              @delete="todoDeleteHandler"
+            />
+          </Todos>
+        </template>
+        <template v-else>
+          <p>Keine Todos vorhanden</p>
+        </template>
       </TodoCard>
     </template>
+
     <template v-else>
-      <TodoCard title="No Todos"></TodoCard>
+      <TodoCard title="Keine Todos vorhanden"></TodoCard>
     </template>
   </div>
 </template>
@@ -69,18 +84,16 @@ export default {
       const index = this.todos.findIndex((item) => item.id === evt.id);
       this.todos[index].done = evt.done;
       this.todosUpdated();
-      //this.save();
     },
     todoDeleteHandler(id) {
-      if (window.confirm(`Do you want delete Todo ID: ${id}?`)) {
+      if (window.confirm(`Willst du wirklich [Todo ID: ${id}] löschen?`)) {
         const index = this.todos.findIndex((item) => item.id === id);
         this.todos.splice(index, 1);
         this.todosUpdated();
       }
-      //this.save();
     },
     addTodoHandler(title) {
-      let maxID = 0;
+      let maxID = 1;
       this.todos.forEach((item) => {
         if (maxID <= item.id) {
           maxID = item.id + 1;
@@ -88,13 +101,13 @@ export default {
       });
       this.todos.unshift({ id: maxID, title: title, done: false });
       this.todosUpdated();
-      //this.save();
     },
 
     // Speichern und Laden
     save() {
       window.localStorage.setItem("TODOS", JSON.stringify(this.todos));
     },
+
     load() {
       const dataJSON = window.localStorage.getItem("TODOS");
       if (dataJSON) {
@@ -103,6 +116,7 @@ export default {
       }
     },
 
+    // Lifecycle
     todosUpdated() {
       this.save();
     },
@@ -121,4 +135,5 @@ export default {
   },
 };
 </script>
+
 <style></style>

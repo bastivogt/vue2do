@@ -8,6 +8,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "TodoCard",
@@ -18,4 +19,5 @@ export default {
   },
 };
 </script>
+
 <style scoped></style>
