@@ -1,7 +1,10 @@
 <template>
   <div class="container" style="max-width: 540px">
     <div class="p-5 mb-4 mt-4 bg-dark rounded-3">
-      <h1 class="d-flex justify-content-center text-white">{{ title }}</h1>
+      <div class="d-flex flex-row justify-content-center align-items-center">
+        <img src="./assets/myTodoListIcon.svg" class="logo me-2" />
+        <h1 class="d-flex justify-content-center text-white">{{ title }}</h1>
+      </div>
     </div>
 
     <TodoCard title="Add Todo">
@@ -136,4 +139,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.logo {
+  width: 40px;
+  height: auto;
+}
+</style>
