@@ -1,13 +1,13 @@
 <template>
   <div class="container" style="max-width: 540px">
-    <div class="p-5 mb-4 mt-4 bg-dark rounded-3">
+    <div class="p-5 mb-4 mt-4 bg-body-secondary rounded-3">
       <div class="d-flex flex-row justify-content-center align-items-center">
         <img src="./assets/myTodoListIcon.svg" class="logo me-2" />
-        <h1 class="d-flex justify-content-center text-white">{{ title }}</h1>
+        <h1 class="d-flex justify-content-center">{{ title }}</h1>
       </div>
     </div>
 
-    <TodoCard title="Add Todo">
+    <TodoCard title="Todo hinzufügen">
       <TodoAdd
         buttonTitle="Neues Todo"
         placeholder="Todo Titel"
@@ -86,13 +86,11 @@ export default {
     todoDoneChangeHandler(evt) {
       const index = this.todos.findIndex((item) => item.id === evt.id);
       this.todos[index].done = evt.done;
-      this.todosUpdated();
     },
     todoDeleteHandler(id) {
       if (window.confirm(`Willst du wirklich [Todo ID: ${id}] löschen?`)) {
         const index = this.todos.findIndex((item) => item.id === id);
         this.todos.splice(index, 1);
-        this.todosUpdated();
       }
     },
     addTodoHandler(title) {
@@ -103,7 +101,6 @@ export default {
         }
       });
       this.todos.unshift({ id: maxID, title: title, done: false });
-      this.todosUpdated();
     },
 
     // Speichern und Laden
@@ -118,10 +115,16 @@ export default {
         this.todos = data;
       }
     },
+  },
 
-    // Lifecycle
-    todosUpdated() {
-      this.save();
+  watch: {
+    todos: {
+      handler(newVal, oldVal) {
+        console.log("watcher todos");
+        console.log(newVal);
+        this.save();
+      },
+      deep: true,
     },
   },
 
